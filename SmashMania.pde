@@ -110,7 +110,7 @@ AirStrike airStrike;
 
 // Instantiate map and game state
 Map map;
-GameState gameState;
+GameStates GameStates;
 
 // Instantiate game variables
 int wave;
@@ -166,7 +166,7 @@ void setup() {
     map.generate();
 
     // Initialise game state
-    gameState = new GameState();
+    GameStates = new GameStates();
 
     // Initialise dev tools and mute toggle
     devToolsOn = false;
@@ -342,7 +342,7 @@ void setup() {
 // Switch to draw the correct game state
 void draw() {
     textAlign(CENTER, CENTER);
-    switch (gameState.phase) {
+    switch (GameStates1.phase) {
         case 0: // Homepage
             drawHomepage();
             drawCrosshairs();
@@ -708,7 +708,7 @@ void drawWave() {
     fill(150, 150, 150);
 
     // Countdown to wave start/resume
-    if (((gameState.lastPhase == 4) || (gameState.lastPhase == 7)) && !waveStarted) {
+    if (((GameStates.lastPhase == 4) || (GameStates.lastPhase == 7)) && !waveStarted) {
         if (waveStartCountdown <= 0) {
             waveStartCountdown = (60 * 3)-20;
             waveStarted = true;
@@ -739,7 +739,7 @@ void drawWave() {
 
     // Endgame condition
     if (playerCar.lives <= 0) {
-        gameState.visitEndgame();
+        GameStates.visitEndgame();
         gameOver.rewind();
         if (!muted) {
             gameOver.play();
@@ -748,7 +748,7 @@ void drawWave() {
 
     // Wave complete condition
     if (humansKilled >= numHumans) {
-        gameState.visitPostWave();
+        GameStates.visitPostWave();
         waveComplete.rewind();
         if (!muted) {
             waveComplete.play();
@@ -1612,37 +1612,37 @@ void keyPressed() {
     } else if (key == 'j' || key == 'J') {
         showQuadTree = !showQuadTree;
     } else if (key == 'q' || key == 'Q') {
-        if (gameState.phase == 5) {
+        if (GameStates.phase == 5) {
             // Reset wave start countdown
             waveStarted = false;
             waveStartCountdown = (60 * 3)-20;
-            gameState.visitPaused();
-        } else if (gameState.phase == 7) {
-            gameState.visitWave();
+            GameStates.visitPaused();
+        } else if (GameStates.phase == 7) {
+            GameStates.visitWave();
         }
     }
     // Developer tools
     if (devToolsOn) {
         if (key == 'z' || key == 'Z') {
-            gameState.visitHomepage();
+            GameStates.visitHomepage();
         } else if (key == 'x' || key == 'X') {
-            gameState.visitGuide();
+            GameStates.visitGuide();
         } else if (key == 'c' || key == 'C') {
-            gameState.visitCarSelect();
+            GameStates.visitCarSelect();
         } else if (key == 'v' || key == 'V') {
-            gameState.visitItemShop();
+            GameStates.visitItemShop();
         } else if (key == 'b' || key == 'B') {
-            gameState.visitPreWave();
+            GameStates.visitPreWave();
         } else if (key == 'n' || key == 'N') {
-            gameState.visitWave();
+            GameStates.visitWave();
         } else if (key == 'm' || key == 'M') {
-            gameState.visitPostWave();
+            GameStates.visitPostWave();
         } else if (key == ',' || key == '<') {
-            gameState.visitPaused();
+            GameStates.visitPaused();
         } else if (key == '.' || key == '>') {
-            gameState.visitEndgame();
+            GameStates.visitEndgame();
         } else if (key == '/' || key == '?') {
-            gameState.visitItemGuide();
+            GameStates.visitItemGuide();
         } else if (keyCode == UP) {
             playerCar.setType(0);
         } else if (keyCode == LEFT) {
@@ -1688,19 +1688,19 @@ void keyReleased() {
 
 // Handle mouse click inputs
 void mousePressed() {
-    if (gameState.phase == 0) { // Homepage
+    if (GameStates.phase == 0) { // Homepage
         if (mouseY > GAME_HEIGHT) {
             if (mouseX < GAME_WIDTH/3) {
                 totalGamesPlayed++;
-                gameState.visitPreWave();
+                GameStates.visitPreWave();
             } else if (mouseX > 2*GAME_WIDTH/3) {
-                gameState.visitCarSelect();
+                GameStates.visitCarSelect();
             } else {
-                gameState.visitGuide();
+                GameStates.visitGuide();
             }
         } else if (mouseY < DATABAR_HEIGHT) {
             if (mouseX < 3*DATABAR_HEIGHT) {
-                gameState.visitStats();
+                GameStates.visitStats();
             } else if (mouseX > GAME_WIDTH-(3*DATABAR_HEIGHT)) {
                 devToolsOn = !devToolsOn;
             } else if (((GAME_WIDTH/2)-(1.5*DATABAR_HEIGHT) < mouseX) && (mouseX < (GAME_WIDTH/2)+(1.5*DATABAR_HEIGHT))) {
@@ -1713,13 +1713,13 @@ void mousePressed() {
                 }
             }
         }
-    } else if (gameState.phase == 1) {  // Guide
+    } else if (GameStates.phase == 1) {  // Guide
         if (mouseY > GAME_HEIGHT) {
-            gameState.visitHomepage();
+            GameStates.visitHomepage();
         }
-    } else if (gameState.phase == 2) {  // CarSelect
+    } else if (GameStates.phase == 2) {  // CarSelect
         if (mouseY > GAME_HEIGHT) {
-            gameState.previous();
+            GameStates.previous();
         } else if ((mouseY > (4*GAME_HEIGHT/5 - 1.25*PLAYER_CAR_WIDTH)) && (mouseY < (4*GAME_HEIGHT/5 + 1.25*PLAYER_CAR_WIDTH))) {
             if ((mouseX > (GAME_WIDTH/5 - 1.25*PLAYER_CAR_WIDTH)) && (mouseX < (GAME_WIDTH/5 + 1.25*PLAYER_CAR_WIDTH))) {
                 playerCar.setType(0);
@@ -1737,14 +1737,14 @@ void mousePressed() {
                 }
             }
         }
-    } else if (gameState.phase == 3) { // ItemShop
+    } else if (GameStates.phase == 3) { // ItemShop
         if (mouseY > GAME_HEIGHT) {
             if (mouseX < GAME_WIDTH/3) {
-                gameState.visitCarSelect();
+                GameStates.visitCarSelect();
             } else if (mouseX > 2*GAME_WIDTH/3) {
-                gameState.visitPostWave();
+                GameStates.visitPostWave();
             } else {
-                gameState.visitItemGuide();
+                GameStates.visitItemGuide();
             }
         } else if ((mouseY > GAME_HEIGHT/2 - 1.25*PLAYER_CAR_WIDTH) && (mouseY < GAME_HEIGHT/2 + 1.25*PLAYER_CAR_WIDTH)) {
             if ((mouseX > GAME_WIDTH/4 - 1.25*PLAYER_CAR_WIDTH) && (mouseX < GAME_WIDTH/4 + 1.25*PLAYER_CAR_WIDTH)) {
@@ -1828,11 +1828,11 @@ void mousePressed() {
                 }
             }
         }
-    } else if (gameState.phase == 4) { // PreWave
+    } else if (GameStates.phase == 4) { // PreWave
         if (mouseY > GAME_HEIGHT) {
-            gameState.visitWave();
+            GameStates.visitWave();
         }
-    } else if (gameState.phase == 5) { // Wave
+    } else if (GameStates.phase == 5) { // Wave
         if (!airStrike.used && !airStrike.exploding && airStrikeUnlocked && waveStarted) {
             airStrike.drop(mouseX, mouseY);
             explosion.rewind();
@@ -1840,28 +1840,28 @@ void mousePressed() {
                 explosion.play();
             }
         }
-    } else if (gameState.phase == 6) { // PostWave
+    } else if (GameStates.phase == 6) { // PostWave
         if (mouseY > GAME_HEIGHT) {
             if (mouseX < GAME_WIDTH/2) {
                 waveStarted = false;
                 setupNextWave();
-                gameState.visitPreWave();
+                GameStates.visitPreWave();
             } else {
-                gameState.visitItemShop();
+                GameStates.visitItemShop();
             }
         }
-    } else if (gameState.phase == 8) { // GameOver
+    } else if (GameStates.phase == 8) { // GameOver
         if (mouseY > GAME_HEIGHT) {
             resetWaves();
-            gameState.visitHomepage();
+            GameStates.visitHomepage();
         }
-    } else if (gameState.phase == 9) { // ItemGuide
+    } else if (GameStates.phase == 9) { // ItemGuide
         if (mouseY > GAME_HEIGHT) {
-            gameState.visitItemShop();
+            GameStates.visitItemShop();
         }
-    } else if (gameState.phase == 10) {  // Stats
+    } else if (GameStates.phase == 10) {  // Stats
         if (mouseY > GAME_HEIGHT) {
-            gameState.visitHomepage();
+            GameStates.visitHomepage();
         }
     }
 }

@@ -1,11 +1,11 @@
-public final class GameState {
+public final class GameStates {
     
     // Instantiate the game state variables
     int phase; // 0 is Homepage, 1 is Guide, 2 is CarSelect, 3 is ItemShop, 4 is PreWave, 5 is Wave, 6 is PostWave, 7 is Paused, 8 is GameOver, 9 is ItemGuide, and 10 is Stats
     int lastPhase;
 
     // Constructor initialises all class variables
-    GameState() {
+    GameStates() {
         this.phase = 0;
         this.lastPhase = 0;
     }
