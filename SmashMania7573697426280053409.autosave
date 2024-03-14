@@ -427,7 +427,7 @@ void drawHomepage() {
     }
     textSize(60);
     fill(0, 0, 0);
-    text("Welcome to Robotron4303!", GAME_WIDTH/2, GAME_HEIGHT/3);
+    text("Welcome to SmashMania!", GAME_WIDTH/2, GAME_HEIGHT/3);
     if (highscore != 0) {
         textSize(30);
         text("High Score: £" + highscore, GAME_WIDTH/2, GAME_HEIGHT/2);
