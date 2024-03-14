@@ -419,12 +419,12 @@ void draw() {
 
 // Draw the home page
 void drawHomepage() {
-    background(0, 152, 0);
-    // map.draw();
-    for (Human human : homepageHumans) {
-        human.draw();
-        human.integrate();
-    }
+    background(255, 255, 255);
+     //map.draw();
+    //for (Human human : homepageHumans) {
+    //    human.draw();
+    //    human.integrate();
+    //}
     textSize(60);
     fill(0, 0, 0);
     text("Welcome to Robotron4303!", GAME_WIDTH/2, GAME_HEIGHT/3);
